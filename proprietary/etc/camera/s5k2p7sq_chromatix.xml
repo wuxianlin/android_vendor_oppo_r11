@@ -1,0 +1,276 @@
+<!--
+  Copyright (c) 2017 Qualcomm Technologies, Inc.
+  All Rights Reserved.
+  Confidential and Proprietary - Qualcomm Technologies, Inc.
+-->
+
+<!--
+CommonChromatixInfo:
+    CommonChromatixInfo is the information about chromatix needed for
+        various use cases.
+    Ex:- Preview, Snapshot, ZSL, HFR, HDR, Video, Liveshot for ISP, CPP,
+        3A and SW PostProc.
+    Entries in this node are common for all sensor modes.
+
+ResolutionChromatixInfo:
+    ResolutionChromatixInfo is the information about chromatix needed for
+        various use cases.
+    Ex:- Preview, Snapshot, ZSL, HFR, HDR, Video, Liveshot for ISP, CPP,
+        3A and SW PostProc.
+    Entries in this node are specific to sensor resolution.
+
+ChromatixName:
+    Contains the list of chromatix names for all modules.
+    special_mode_mask:
+        It is the bit mask for special modes, which is used for
+            chromatix selection.
+        Special modes can be any mode that needs a special chromatix.
+        Ex:- scene mode, DZOOM mode, OIS capture mode, flash mode
+        This is applicable for CommonChromatixInfo and
+            ResolutionChromatixInfo.
+        special_mode_mask="0" means none of the special modes are
+            selected.
+    sensor_resolution_index:
+        It is the sensor resolution index for which chromatix libraries
+            will be choosen.
+        It is applicable only in ResolutionChromatixInfo.
+
+ISPCommon :
+    Common tuning library name for ISP
+ISPPreview :
+    Preview tuning library name for ISP
+ISPSnapshot :
+    Snapshot tuning library name for ISP
+CPPCommon :
+    Common tuning library name for CPP
+CPPPreview :
+    Preview tuning library name for CPP
+CPPSnapshot :
+    Snapshot tuning library name for CPP
+CPPLiveshot :
+    Liveshot tuning library name for CPP
+PostProc :
+    Tuning library name for postproc module
+A3Preview :
+    Preview tuning library for 3A
+A3Video :
+    Video tuning library for 3A
+
+Order of Resolution Pick:
+    Assume the current sensor mode is "r" and special mode mask is "s".
+    Chromatix for a module and type is choosen in this order till we find a
+        valid chroamtix file name or else NULL is returned.
+    1) From ResolutionChromatixInfo node for which sensor_resolution_index
+        is "r" and special_mode_mask is "s".
+    2) From CommonChromatixInfo node for which special_mode_mask is "s".
+    3) From ResolutionChromatixInfo node for which sensor_resolution_index
+        is "r" and special_mode_mask is "0".
+    4) From CommonChromatixInfo node for which special_mode_mask is "0".
+    5) NULL is returned if we dont find in any of the above cases.
+
+special_mode_mask values:
+    SENSOR_SPECIAL_MODE_NONE = 0,
+    SENSOR_SPECIAL_MODE_FLASH = 1,
+    SENSOR_SPECIAL_MODE_ZOOM_UPSCALE = 2,
+    SENSOR_SPECIAL_MODE_ZOOM_DOWNSCALE = 4,
+    SENSOR_SPECIAL_MODE_OIS_CAPTURE = 8,
+-->
+
+<ChromatixConfigurationRoot>
+  <CommonChromatixInfo>
+    <ChromatixName special_mode_mask="0">
+      <ISPCommon>s5k2p7sq_common</ISPCommon>
+      <PostProc>s5k2p7sq_postproc</PostProc>
+    </ChromatixName>
+    <ChromatixName special_mode_mask="OPPO_ENGINEER_MODE">
+      <ISPCommon>s5k2p7sq_common_engineer</ISPCommon>
+      <ISPPreview>s5k2p7sq_isp_4k_video_engineer</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_4k_video_engineer</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_4k_video_engineer</ISPVideo>
+    </ChromatixName>
+    <ChromatixName special_mode_mask="OPPO_ZZHDR">
+      <ISPCommon>s5k2p7sq_common_zzhdr</ISPCommon>
+    </ChromatixName>
+    <ChromatixName special_mode_mask="OPPO_PORTRAIT">
+      <ISPCommon>s5k2p7sq_common_3264x2448</ISPCommon>
+    </ChromatixName>
+  </CommonChromatixInfo>
+  <ResolutionChromatixInfo>
+    <ChromatixName sensor_resolution_index="0" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_zsl_snapshot</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_zsl_snapshot</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_zsl_snapshot</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_zsl_preview</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_zsl_snapshot</CPPSnapshot>
+      <CPPCustom>s5k2p7sq_cpp_zsl_custom</CPPCustom>
+      <CPPFace>s5k2p7sq_zsl_face_cpp</CPPFace>
+      <FaceMuti>s5k2p7sq_zsl_multi_face_cpp</FaceMuti>
+      <CPPLess>s5k2p7sq_zsl_less_cpp</CPPLess>
+      <CPPMultiFlash>s5k2p7sq_zsl_flash_cpp</CPPMultiFlash>
+      <CPPVideo>s5k2p7sq_cpp_zsl_preview</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_zsl_snapshot</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_zsl_preview</A3Preview>
+      <A3Video>s5k2p7sq_3a_zsl_preview</A3Video>
+      <CPPZoom>s5k2p7sq_zsl_zoom_cpp</CPPZoom>
+      <CPPPrvzoom>s5k2p7sq_zoom_preview_cpp</CPPPrvzoom>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="0" special_mode_mask="OPPO_SPECIAL">
+      <ISPPreview>s5k2p7sq_isp_special_snapshot</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_special_snapshot</ISPSnapshot>
+      <CPPSnapshot>s5k2p7sq_special_snapshot_cpp</CPPSnapshot>
+      <A3Preview>s5k2p7sq_3a_special_preview</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="0" special_mode_mask="OPPO_PROFESSIONAL">
+      <ISPPreview>s5k2p7sq_isp_zsl_snapshot_professional</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_zsl_snapshot_professional</ISPSnapshot>
+      <CPPPreview>s5k2p7sq_zsl_preview_professional_cpp</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_zsl_snapshot_professional_cpp</CPPSnapshot>
+      <A3Preview>s5k2p7sq_3a_zsl_preview_professional</A3Preview>
+      <A3Video>s5k2p7sq_3a_zsl_preview_professional</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="0" special_mode_mask="OPPO_PANORAMA">
+      <ISPPreview>s5k2p7sq_isp_zsl_snapshot_panorama</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_zsl_snapshot_panorama</ISPSnapshot>
+      <CPPPreview>s5k2p7sq_zsl_preview_cpp_panorama</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_zsl_snapshot_cpp_panorama</CPPSnapshot>
+      <A3Preview>s5k2p7sq_3a_zsl_preview_panorama</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="0" special_mode_mask="OPPO_ENGINEER_MODE">
+      <A3Preview>s5k2p7sq_3a_zsl_preview_engineer</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="1" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_4k_video</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_4k_video</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_4k_video</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_default_video_4ksize</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_default_video_4ksize</CPPSnapshot>
+      <CPPVideo>s5k2p7sq_cpp_default_video_4ksize</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_default_video_4ksize</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_4k_video</A3Preview>
+      <A3Video>s5k2p7sq_3a_4k_video</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="1" special_mode_mask="OPPO_WECHAT">
+      <ISPPreview>s5k2p7sq_isp_zsl_snapshot</ISPPreview>
+      <CPPPreview>s5k2p7sq_preview_1080p_cpp</CPPPreview>
+      <A3Preview>s5k2p7sq_3a_wechat_preview</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="1" special_mode_mask="OPPO_SIZE_VGA">
+      <ISPPreview>s5k2p7sq_isp_special_snapshot</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_special_snapshot</ISPSnapshot>
+      <CPPPreview>s5k2p7sq_preview_480p_cpp</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_special_snapshot_cpp</CPPSnapshot>
+      <A3Preview>s5k2p7sq_3a_special_16_9_preview</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="1" special_mode_mask="OPPO_SIZE_720P">
+      <ISPPreview>s5k2p7sq_isp_special_snapshot</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_special_snapshot</ISPSnapshot>
+      <CPPPreview>s5k2p7sq_preview_720p_cpp</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_special_snapshot_cpp</CPPSnapshot>
+      <A3Preview>s5k2p7sq_3a_special_16_9_preview</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="1" special_mode_mask="OPPO_SIZE_1080P">
+      <ISPPreview>s5k2p7sq_isp_special_snapshot</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_special_snapshot</ISPSnapshot>
+      <CPPPreview>s5k2p7sq_preview_1080p_cpp</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_special_snapshot_cpp</CPPSnapshot>
+      <A3Preview>s5k2p7sq_3a_special_16_9_preview</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="1" special_mode_mask="OPPO_ENGINEER_MODE">
+        <A3Preview>s5k2p7sq_3a_4k_video_engineer</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="2" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_default_video</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_default_video</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_default_video</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_default_video</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_default_video</CPPSnapshot>
+      <CPPVideo>s5k2p7sq_cpp_default_video</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_default_video</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_default_preview_binning</A3Preview>
+      <A3Video>s5k2p7sq_3a_default_video_binning</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="2" special_mode_mask="OPPO_WECHAT">
+      <CPPPreview>s5k2p7sq_preview_wechat_cpp</CPPPreview>
+      <CPPVideo>s5k2p7sq_preview_wechat_cpp</CPPVideo>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="2" special_mode_mask="OPPO_SIZE_VGA">
+      <ISPPreview>s5k2p7sq_isp_special_snapshot</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_special_snapshot</ISPSnapshot>
+      <CPPPreview>s5k2p7sq_preview_480p_cpp</CPPPreview>
+      <CPPVideo>s5k2p7sq_preview_wechat_cpp</CPPVideo>
+      <CPPSnapshot>s5k2p7sq_special_snapshot_cpp</CPPSnapshot>
+      <A3Preview>s5k2p7sq_3a_special_preview</A3Preview>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="2" special_mode_mask="OPPO_SIZE_720P">
+      <CPPPreview>s5k2p7sq_preview_720p_cpp</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_special_snapshot_cpp</CPPSnapshot>
+      </ChromatixName>
+      <ChromatixName sensor_resolution_index="2" special_mode_mask="OPPO_SIZE_1080P">
+      <CPPPreview>s5k2p7sq_preview_1080p_cpp</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_special_snapshot_cpp</CPPSnapshot>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="3" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_1080p_video</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_1080p_video</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_1080p_video</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_1080p_video</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_1080p_video</CPPSnapshot>
+      <CPPVideo>s5k2p7sq_cpp_1080p_video</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_1080p_video</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_1080p_video</A3Preview>
+      <A3Video>s5k2p7sq_3a_1080p_video</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="4" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_snapshot_3264x2448</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_snapshot_3264x2448</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_snapshot_3264x2448</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_zsl_snapshot_3264x2448</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_zsl_snapshot_3264x2448</CPPSnapshot>
+      <CPPVideo>s5k2p7sq_cpp_zsl_snapshot_3264x2448</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_zsl_snapshot_3264x2448</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_zsl_preview_3264x2448</A3Preview>
+      <A3Video>s5k2p7sq_3a_zsl_preview_3264x2448</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="5" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_snapshot_3264x2448</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_snapshot_3264x2448</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_snapshot_3264x2448</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_zsl_preview_3264x2448</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_zsl_snapshot_3264x2448</CPPSnapshot>
+      <CPPCustom>s5k2p7sq_cpp_zsl_custom_3264x2448</CPPCustom>
+      <CPPVideo>s5k2p7sq_cpp_zsl_snapshot_3264x2448</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_zsl_snapshot_3264x2448</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_zsl_preview_3264x2448</A3Preview>
+      <A3Video>s5k2p7sq_3a_zsl_preview_3264x2448</A3Video>
+    </ChromatixName>
+    <ChromatixName sensor_resolution_index="6" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_zsl_snapshot_professional</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_zsl_snapshot_professional</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_zsl_snapshot</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_zsl_preview</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_zsl_snapshot</CPPSnapshot>
+      <CPPCustom>s5k2p7sq_cpp_zsl_custom</CPPCustom>
+      <CPPFace>s5k2p7sq_zsl_face_cpp</CPPFace>
+      <FaceMuti>s5k2p7sq_zsl_multi_face_cpp</FaceMuti>
+      <CPPLess>s5k2p7sq_zsl_less_cpp</CPPLess>
+      <CPPMultiFlash>s5k2p7sq_zsl_flash_cpp</CPPMultiFlash>
+      <CPPVideo>s5k2p7sq_cpp_zsl_preview</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_zsl_snapshot</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_zsl_preview_professional</A3Preview>
+      <A3Video>s5k2p7sq_3a_zsl_preview_professional</A3Video>
+      <CPPZoom>s5k2p7sq_zsl_zoom_cpp</CPPZoom>
+      <CPPPrvzoom>s5k2p7sq_zoom_preview_cpp</CPPPrvzoom>
+    </ChromatixName>
+     <ChromatixName sensor_resolution_index="8" special_mode_mask="0">
+      <ISPPreview>s5k2p7sq_isp_1080p_video</ISPPreview>
+      <ISPSnapshot>s5k2p7sq_isp_1080p_video</ISPSnapshot>
+      <ISPVideo>s5k2p7sq_isp_1080p_video</ISPVideo>
+      <CPPPreview>s5k2p7sq_cpp_1080p_video</CPPPreview>
+      <CPPSnapshot>s5k2p7sq_cpp_1080p_video</CPPSnapshot>
+      <CPPVideo>s5k2p7sq_cpp_1080p_video</CPPVideo>
+      <CPPLiveshot>s5k2p7sq_cpp_1080p_video</CPPLiveshot>
+      <A3Preview>s5k2p7sq_3a_1080p_video</A3Preview>
+      <A3Video>s5k2p7sq_3a_1080p_video</A3Video>
+    </ChromatixName>
+  </ResolutionChromatixInfo>
+</ChromatixConfigurationRoot>
